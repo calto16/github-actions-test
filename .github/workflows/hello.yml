@@ -1,0 +1,23 @@
+name: Hello World
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Say hello
+        run: echo "Hello, World! Triggered by ${{ github.event_name }} on ${{ github.ref }}."
+
+      - name: Show runner info
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Actor:      ${{ github.actor }}"
+          echo "Commit:     ${{ github.sha }}"
+          echo "Runner OS:  ${{ runner.os }}"
