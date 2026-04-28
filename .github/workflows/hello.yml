@@ -21,3 +21,16 @@ jobs:
           echo "Actor:      ${{ github.actor }}"
           echo "Commit:     ${{ github.sha }}"
           echo "Runner OS:  ${{ runner.os }}"
+
+      - name: PR-only greeting (via local action)
+        if: github.event_name == 'pull_request'
+        uses: ./.github/actions/greet
+        with:
+          who: ${{ github.event.pull_request.user.login }}
+          pr-number: ${{ github.event.pull_request.number }}
+
+      - name: Push greeting (via local action)
+        if: github.event_name == 'push'
+        uses: ./.github/actions/greet
+        with:
+          who: ${{ github.actor }}
