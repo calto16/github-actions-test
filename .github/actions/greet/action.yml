@@ -1,0 +1,32 @@
+name: 'Greet'
+description: 'Print a friendly greeting with optional PR context.'
+author: 'calto16'
+
+branding:
+  icon: 'zap'
+  color: 'yellow'
+
+inputs:
+  who:
+    description: 'Name or handle to greet.'
+    required: false
+    default: 'World'
+  pr-number:
+    description: 'Optional PR number to mention.'
+    required: false
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Say hello
+      shell: bash
+      env:
+        WHO: ${{ inputs.who }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+      run: |
+        if [ -n "${PR_NUMBER}" ]; then
+          echo "Hello, @${WHO}! Thanks for opening PR #${PR_NUMBER}."
+        else
+          echo "Hello, ${WHO}!"
+        fi

@@ -22,10 +22,15 @@ jobs:
           echo "Commit:     ${{ github.sha }}"
           echo "Runner OS:  ${{ runner.os }}"
 
-      - name: PR-only greeting
+      - name: PR-only greeting (via local action)
         if: github.event_name == 'pull_request'
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
-        run: |
-          echo "Hello from PR #${PR_NUMBER} by @${PR_AUTHOR}!"
+        uses: ./.github/actions/greet
+        with:
+          who: ${{ github.event.pull_request.user.login }}
+          pr-number: ${{ github.event.pull_request.number }}
+
+      - name: Push greeting (via local action)
+        if: github.event_name == 'push'
+        uses: ./.github/actions/greet
+        with:
+          who: ${{ github.actor }}
